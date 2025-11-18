@@ -15,10 +15,75 @@ The SDK is open source and available at: **https://github.com/ruilisi/lingti-sdk
 **Pre-compiled DLL/lib files for each SDK version are available in the [GitHub Releases](https://github.com/ruilisi/lingti-sdk/releases) section.**
 
 Each release includes:
-- `lingti_sdk.dll` - Main SDK library
-- `lingti_sdk.lib` - Import library for linking
+- `lingti_sdk.dll` - Main SDK library (13MB)
+- `lingti_sdk.lib` - Import library for linking (8.6KB)
+- `lingti_sdk.h` - C header file with API declarations
+- `lingti_sdk.def` - Module definition file
 
 **Note:** The `lingtiwfp64.sys` Windows driver file is included in the repository (not in releases, as it rarely changes). This file **must be placed in the same directory as your compiled executable** for the SDK to function properly on Windows.
+
+### Understanding DLL vs LIB
+
+#### What is the DLL?
+
+The **DLL (Dynamic Link Library)** file (`lingti_sdk.dll`, 13MB) contains all the actual compiled code:
+- Complete Go runtime and garbage collector
+- All SDK functionality and business logic
+- Network tunneling implementation
+- Required at **runtime** when your application executes
+
+**Runtime requirement:** `lingti_sdk.dll` must be present when your application runs. Place it:
+- In the same directory as your `.exe` file (recommended)
+- In a system directory (e.g., `C:\Windows\System32`)
+- In any directory listed in your system's PATH environment variable
+
+#### What is the LIB?
+
+The **LIB (Import Library)** file (`lingti_sdk.lib`, 8.6KB) is much smaller because it contains only:
+- Stub code with function name references
+- Metadata telling the linker where to find functions in the DLL
+- Import table information
+
+**The small size (8.6KB vs 13MB) is normal and correct!** The import library only contains references to the 9 exported functions, not the actual implementation code.
+
+**Compile-time requirement:** `lingti_sdk.lib` is only needed when compiling/linking your application with MSVC. It's not needed at runtime.
+
+#### When to Use Each File
+
+| File | Used When | Purpose |
+|------|-----------|---------|
+| `lingti_sdk.dll` | Runtime (always) | Contains all actual code, must be distributed with your app |
+| `lingti_sdk.lib` | Compile-time (MSVC only) | Tells linker how to find DLL functions |
+| `lingti_sdk.h` | Compile-time (always) | Provides function declarations for your C code |
+
+#### Compiler-Specific Usage
+
+**MSVC (Visual Studio):**
+```bash
+# Compilation requires .lib file
+cl your_app.c lingti_sdk.lib
+
+# Runtime requires .dll file in same directory as .exe
+your_app.exe    # needs lingti_sdk.dll present
+```
+
+**MinGW/GCC:**
+```bash
+# Can link directly against .dll (no .lib needed)
+gcc your_app.c -L. -llingti_sdk -o your_app.exe
+
+# Runtime requires .dll file
+./your_app.exe  # needs lingti_sdk.dll present
+```
+
+#### Distribution Checklist
+
+When distributing your application, include:
+- ✅ Your compiled `.exe` file
+- ✅ `lingti_sdk.dll` (13MB - **required at runtime**)
+- ✅ `lingtiwfp64.sys` (Windows driver - **required at runtime**)
+- ❌ `lingti_sdk.lib` (NOT needed by end users)
+- ❌ `lingti_sdk.h` (NOT needed by end users)
 
 ## Features
 
