@@ -50,22 +50,38 @@ int main() {
         printf("Service status: RUNNING\n\n");
     }
 
+    int result2 = RunPing();
+    if (result2 == 0) {
+        printf("Ping monitoring started\n");
+    } else {
+        printf("Failed to start ping (code %d)\n", result);
+    }
+
     // Monitor traffic for 30 seconds
     printf("Monitoring traffic for 30 seconds...\n");
     printf("Press Ctrl+C to stop early\n\n");
 
     for (int i = 0; i < 30; i++) {
         unsigned long long txBytes, rxBytes;
+        int64_t router, takeoff, landing;
         GetTrafficStats(&txBytes, &rxBytes, NULL, NULL);
+        GetLastPingStats(&router, &takeoff, &landing);
 
+        printf("\r[%02d/%02d] router: %lld | takeoff: %lld | landing: %lld\n",
+               i + 1, 30, router, takeoff, landing);
         printf("\r[%02d/%02d] TX: %llu bytes | RX: %llu bytes",
                i + 1, 30, txBytes, rxBytes);
-        fflush(stdout);
 
         SLEEP(1000);
     }
 
     printf("\n\n");
+
+    
+    // Stop when done
+    if (StopPing() == 0) {
+        printf("Ping monitoring stopped\n");
+    }
 
     // Stop the service
     printf("Stopping service...\n");

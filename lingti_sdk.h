@@ -135,6 +135,73 @@ void GetTrafficStats(unsigned long long* txBytes,
                      unsigned long long* rxPkts);
 
 /**
+ * Get the latest ping statistics
+ *
+ * Retrieves the most recent ping measurements to various network endpoints.
+ *
+ * @param router - Pointer to receive ping time to router in milliseconds (can be NULL)
+ * @param takeoff - Pointer to receive ping time to takeoff server in milliseconds (can be NULL)
+ * @param landing - Pointer to receive ping time to landing server in milliseconds (can be NULL)
+ *
+ * Example:
+ *   long long routerPing, takeoffPing, landingPing;
+ *   GetLastPingStats(&routerPing, &takeoffPing, &landingPing);
+ *   printf("Router: %lld ms, Takeoff: %lld ms, Landing: %lld ms\n",
+ *          routerPing, takeoffPing, landingPing);
+ *
+ * Notes:
+ *   - Router ping is to the local gateway
+ *   - Takeoff ping is to the proxy entry server
+ *   - Landing ping is to the proxy exit server
+ */
+void GetLastPingStats(long long* router,
+                      long long* takeoff,
+                      long long* landing);
+
+/**
+ * Start periodic ping monitoring
+ *
+ * Starts a background thread that periodically pings the server and measures latency.
+ * Ping statistics can be retrieved using GetLastPingStats().
+ *
+ * @return 0 on success, negative error code on failure:
+ *         -1: Invalid server pointer (NULL)
+ *         -2: Ping is already running
+ *
+ * Example:
+ *   int result = RunPing();
+ *   if (result == 0) {
+ *       printf("Ping monitoring started\n");
+ *   }
+ *
+ * Notes:
+ *   - Runs in background thread
+ *   - Pings every 5 seconds by default
+ *   - Call StopPing() to stop monitoring
+ *   - Only one ping session can run at a time
+ */
+int RunPing();
+
+/**
+ * Stop periodic ping monitoring
+ *
+ * Stops the background ping monitoring thread started by RunPing().
+ *
+ * @return 0 on success, negative error code on failure:
+ *         -1: Ping is not running
+ *
+ * Example:
+ *   if (StopPing() == 0) {
+ *       printf("Ping monitoring stopped\n");
+ *   }
+ *
+ * Notes:
+ *   - Safe to call even if already stopped
+ *   - Thread stops gracefully
+ */
+int StopPing(void);
+
+/**
  * Flush the DNS cache
  *
  * This function flushes the local DNS cache to force fresh DNS lookups.

@@ -8,4 +8,7 @@ GetSDKVersion
 GetLastErrorMessage
 FreeString
 GetTrafficStats
+GetLastPingStats
+RunPing
+StopPing
 FlushDNSCache
