@@ -4,26 +4,34 @@
 
 # Detect OS
 ifeq ($(OS),Windows_NT)
-	# Windows (native cmd/PowerShell)
-	EXE_EXT = .exe
-	RM = del /Q
-	RMDIR = rmdir /S /Q
-	MKDIR = mkdir
-	CP = copy
-	SEP = \\
-	SDK_LIB = lingti_sdk.lib
-	LDFLAGS = lingti_sdk.lib
+    # Real Windows kernel, but we need to detect whether Make is running under
+    # CMD/PowerShell or MSYS/MinGW/Cygwin (Git Bash).
+    ifeq ($(shell uname 2>/dev/null),)
+        # CMD / PowerShell (no uname output)
+        EXE_EXT = .exe
+        RM = del /Q
+        RMDIR = rmdir /S /Q
+        MKDIR = mkdir
+        CP = copy
+        SEP = \\
+    else
+        # Git Bash / MSYS / Cygwin running on Windows
+        EXE_EXT = .exe
+        RM = rm -f
+        RMDIR = rm -rf
+        MKDIR = mkdir -p
+        CP = cp
+        SEP = /
+    endif
 else
-	# Unix-like systems (Linux, macOS, MinGW/MSYS, Cygwin)
-	EXE_EXT = .exe
-	RM = rm -f
-	RMDIR = rm -rf
-	MKDIR = mkdir -p
-	CP = cp
-	SEP = /
-	SDK_LIB = lingti_sdk.lib
-	# Use .lib file for cross-compilation or MinGW
-	LDFLAGS = lingti_sdk.lib
+    # Pure Linux / macOS
+    EXE_EXT = 
+    RM = rm -f
+    RMDIR = rm -rf
+    MKDIR = mkdir -p
+    CP = cp
+    SEP = /
+
 endif
 
 # Compiler settings
@@ -41,6 +49,10 @@ else
 	endif
 endif
 CFLAGS = -Wall -O2 -I.
+
+# Shared flags
+SDK_LIB = lingti_sdk.lib
+LDFLAGS = $(SDK_LIB)
 
 # Directories and files
 OUTPUT_DIR = dist
@@ -71,6 +83,11 @@ endif
 	@echo "  - $(SDK_DLL)"
 
 clean:
+ifeq ($(OS),Windows_NT)
+	@echo "clean wfp driver"
+	-sc.exe stop lingtiwfp
+	-sc.exe delete lingtiwfp
+endif
 	$(RMDIR) $(OUTPUT_DIR)
 
 help:
