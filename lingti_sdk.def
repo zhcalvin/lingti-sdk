@@ -12,3 +12,4 @@ GetLastPingStats
 RunPing
 StopPing
 FlushDNSCache
+GetConsoleConfig

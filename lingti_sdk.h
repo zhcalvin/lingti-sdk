@@ -210,6 +210,29 @@ int StopPing(void);
  */
 int FlushDNSCache(void);
 
+/**
+ * Get console configuration parameters
+ *
+ * Retrieves the console mode network configuration including gateway, subnet mask, IP, and DNS.
+ *
+ * @param gateway - Pointer to receive gateway address string (can be NULL)
+ * @param mask - Pointer to receive subnet mask string (can be NULL)
+ * @param ip - Pointer to receive console IP address string (can be NULL)
+ * @param dns - Pointer to receive DNS server string (can be NULL)
+ *
+ * Example:
+ *   char *gateway, *mask, *ip, *dns;
+ *   GetConsoleConfig(&gateway, &mask, &ip, &dns);
+ *   printf("Gateway: %s, Mask: %s, IP: %s, DNS: %s\n", gateway, mask, ip, dns);
+ *   FreeString(gateway);
+ *   FreeString(mask);
+ *   FreeString(ip);
+ *   FreeString(dns);
+ *
+ * Note: Caller must call FreeString() on each returned string to avoid memory leaks.
+ */
+void GetConsoleConfig(char** gateway, char** mask, char** ip, char** dns);
+
 #ifdef __cplusplus
 }
 #endif
