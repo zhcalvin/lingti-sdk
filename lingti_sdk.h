@@ -4,7 +4,7 @@
  * This SDK provides network tunneling capabilities for game traffic routing.
  *
  * Copyright (c) 2025 Ruilisi
- * Version: 1.4.1
+ * Version: 1.4.2
  */
 
 #ifndef LINGTI_SDK_H
@@ -87,7 +87,7 @@ int IsServiceRunning(void);
 /**
  * Get the SDK version string
  *
- * @return Version string (e.g., "1.4.1")
+ * @return Version string (e.g., "1.4.2")
  *
  * Note: Caller must call FreeString() to release the returned string.
  */
@@ -220,10 +220,10 @@ int FlushDNSCache(void);
  * @param ip - Pointer to receive console IP address string (can be NULL)
  * @param dns - Pointer to receive DNS server string (can be NULL)
  * @return Console IP state:
- *         0 = idle (not started)
- *         1 = in_progress (IP assignment in progress)
- *         2 = completed (IP assignment successful)
- *         3 = failed (IP assignment failed)
+ *         0 = completed (IP assignment successful)
+ *         1 = failed (IP assignment failed)
+ *         2 = idle (not started)
+ *         3 = in_progress (IP assignment in progress)
  *
  * Example:
  *   char *gateway, *mask, *ip, *dns;
