@@ -1,6 +1,6 @@
 {
   "name": "lingti-sdk",
-  "version": "1.4.5",
+  "version": "1.4.6",
   "description": "Node.js native addon for Lingti SDK - Network Tunneling Service",
   "main": "index.js",
   "types": "index.d.ts",
@@ -40,6 +40,7 @@
     "scripts/",
     "lingti_sdk.dll",
     "lingti_sdk.lib",
+    "lingti_sdk.h",
     "lingtiwfp64.sys",
     "README.md"
   ]

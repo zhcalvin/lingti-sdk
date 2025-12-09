@@ -2,7 +2,7 @@
 
 # Publish script for lingti-sdk npm package
 # Usage: ./scripts/publish.sh <version>
-# Example: ./scripts/publish.sh 1.4.5
+# Example: ./scripts/publish.sh 1.4.6
 
 set -e  # Exit on error
 
@@ -16,7 +16,7 @@ NC='\033[0m' # No Color
 if [ -z "$1" ]; then
     echo -e "${RED}Error: Version number is required${NC}"
     echo "Usage: $0 <version>"
-    echo "Example: $0 1.4.5"
+    echo "Example: $0 1.4.6"
     exit 1
 fi
 
@@ -25,7 +25,7 @@ NEW_VERSION=$1
 # Validate version format (x.y.z)
 if ! [[ "$NEW_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
     echo -e "${RED}Error: Invalid version format${NC}"
-    echo "Version must be in format x.y.z (e.g., 1.4.5)"
+    echo "Version must be in format x.y.z (e.g., 1.4.6)"
     exit 1
 fi
 

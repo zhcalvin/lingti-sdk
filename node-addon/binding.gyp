@@ -7,7 +7,7 @@
       ],
       "include_dirs": [
         "<!@(node -p \"require('node-addon-api').include\")",
-        "<(module_root_dir)/.."
+        "<(module_root_dir)"
       ],
       "defines": [
         "NAPI_DISABLE_CPP_EXCEPTIONS"

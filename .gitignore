@@ -10,3 +10,4 @@ node-addon/build/
 node-addon/*.node
 node-addon/prebuilds/
 node-addon/lingtiwfp64.sys
+node-addon/lingti_sdk.h
