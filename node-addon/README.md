@@ -1,5 +1,7 @@
 # Lingti SDK - Node.js Native Addon
 
+English | [简体中文](README.zh-CN.md)
+
 Node.js native addon (N-API) for the Lingti SDK, providing network tunneling capabilities for game traffic routing.
 
 This addon is located in the `node-addon` directory of the lingti-core project and links to the SDK DLL in `../dist/lingti_sdk/`.
@@ -322,4 +324,4 @@ Proprietary - Copyright (c) 2025 Ruilisi
 
 ## Version
 
-SDK Version: 1.4.3
+SDK Version: 1.4.4
