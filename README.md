@@ -197,8 +197,7 @@ Related APIs will be provided once requested [here](https://xiemala.com/f/rY1aZz
 
 ### Core Functions
 
-- `StartTun2R(const char* configJSON)` - Start service with JSON config string
-- `StartTun2RWithConfigFile(const char* configPath)` - Start service from config file
+- `StartTun2RWithConfigFile(const char* configPath)` - Start service from encrypted config file (base64 encoded text)
 - `StopTun2R(void)` - Stop the service gracefully
 - `IsServiceRunning(void)` - Check if service is running
 
@@ -282,4 +281,4 @@ Copyright (c) 2025 Ruilisi
 
 ## Version
 
-Current version: 1.0.0
+Current version: 1.4.3

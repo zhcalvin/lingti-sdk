@@ -50,17 +50,9 @@ if (!lingti.isAddonAvailable()) {
     process.exit(1);
 }
 
-// Start the service with configuration
-const config = {
-    Mode: "tun_switch",
-    Server: "your-server.com:port",
-    Token: "your-token",
-    LogLevel: "info",
-    GameExes: ["game.exe"],
-    GameID: "YOUR_GAME"
-};
-
-const result = lingti.startTun2R(config);
+// Start the service with encrypted config file (base64 encoded text)
+// To obtain encrypted config, select game and line, then request from backend service
+const result = lingti.startTun2RWithConfigFile('encrypted_config.txt');
 if (result === 0) {
     console.log('Service started successfully!');
     console.log('SDK Version:', lingti.getSDKVersion());
@@ -88,47 +80,38 @@ The addon includes full TypeScript definitions:
 ```typescript
 import * as lingti from 'lingti-sdk';
 
-const config: lingti.TunnelConfig = {
-    Mode: "tun_switch",
-    Server: "server.com:port",
-    Token: "token",
-    GameID: "GAME"
-};
-
-lingti.startTun2R(config);
+// Start service with encrypted config file
+lingti.startTun2RWithConfigFile('encrypted_config.txt');
 ```
 
 ## API Reference
 
 ### Core Functions
 
-#### `startTun2R(config)`
+#### `startTun2R(encryptedConfig)`
 
-Start the TUN2R service with JSON configuration.
+Start the TUN2R service with encrypted configuration (base64 encoded text).
 
 - **Parameters:**
-  - `config` (string | object): Configuration JSON string or object
+  - `encryptedConfig` (string): Base64 encoded encrypted configuration text
 - **Returns:** `number` - 0 on success, negative error code on failure
 
 ```javascript
-const result = lingti.startTun2R({
-    Mode: "tun_switch",
-    Server: "server.com:port",
-    Token: "your-token",
-    GameID: "GAME"
-});
+// Use encrypted config text (base64 encoded)
+const encryptedConfig = "...base64 encrypted config...";
+const result = lingti.startTun2R(encryptedConfig);
 ```
 
 #### `startTun2RWithConfigFile([configPath])`
 
-Start the service using a configuration file.
+Start the service using an encrypted configuration file (base64 encoded text).
 
 - **Parameters:**
-  - `configPath` (string, optional): Path to config file
+  - `configPath` (string, optional): Path to encrypted config file (defaults to 'encrypted_config.txt')
 - **Returns:** `number` - 0 on success, negative error code on failure
 
 ```javascript
-const result = lingti.startTun2RWithConfigFile('./config.json');
+const result = lingti.startTun2RWithConfigFile('encrypted_config.txt');
 ```
 
 #### `stopTun2R()`
